@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manajemen User - SIPUSTAKA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-100 text-slate-900 h-screen overflow-hidden">
+    <div class="h-screen flex flex-col md:flex-row">
+      
+      <aside class="w-full md:w-72 h-screen bg-slate-950 text-slate-100 flex flex-col justify-between">
+        <div>
+          <div class="px-6 py-7 border-b border-slate-800 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white text-sm">P</div>
+            <div>
+              <h1 class="text-xs font-semibold tracking-wider text-slate-400">SIPUSTAKA</h1>
+              <p class="text-sm font-bold text-slate-100 -mt-1">Sistem Peminjaman Buku</p>
+            </div>
+          </div>
+          
+          <nav class="px-4 py-6 space-y-1">
+            <a href="{% url 'dashboard' %}" class="w-full flex items-center gap-3 text-slate-400 hover:bg-slate-900 px-4 py-3 rounded-2xl transition">
+              <span class="material-icons-outlined">dashboard</span> Dashboard
+            </a>
+            <a href="{% url 'buku' %}" class="w-full flex items-center gap-3 text-slate-400 hover:bg-slate-900 px-4 py-3 rounded-2xl transition">
+              <span class="material-icons-outlined">menu_book</span> Buku
+            </a>
+            <a href="{% url 'pinjam' %}" class="w-full flex items-center gap-3 text-slate-400 hover:bg-slate-900 px-4 py-3 rounded-2xl transition">
+              <span class="material-icons-outlined">assignment</span> Peminjaman
+            </a>
+            <a href="{% url 'users' %}" class="w-full flex items-center gap-3 text-slate-200 bg-slate-900 px-4 py-3 rounded-2xl shadow-inner shadow-black/10">
+              <span class="material-icons-outlined">group</span> User
+            </a>
+          </nav>
+        </div>
+
+        <div class="p-4 border-t border-slate-900 bg-slate-950/50 mb-4 mx-2 rounded-2xl">
+          <p class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Admin Aktif</p>
+          <p class="text-sm font-bold text-slate-200 mt-0.5">Yusuf Iman Assidik</p>
+        </div>
+      </aside>
+
+      <main class="flex-1 overflow-y-auto p-6 md:p-8">
+        <div class="space-y-6">
+          
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <p class="text-xs font-semibold text-slate-500 uppercase">Data siswa yang bisa meminjam buku.</p>
+              <h2 class="text-2xl font-bold text-slate-900 mt-0.5">User</h2>
+            </div>
+            <a href="{% url 'add_user' %}" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-blue-600 hover:bg-blue-700 px-6 py-3 font-semibold text-white shadow-lg shadow-blue-600/20 transition text-sm">
+              <span class="material-icons-outlined text-md">person_add</span> Tambah User
+            </a>
+          </div>
+
+          <div class="rounded-3xl bg-white shadow-xl border border-slate-200 overflow-hidden p-4">
+            <div class="overflow-x-auto">
+              <table class="w-full border-collapse text-left text-sm text-slate-600">
+                <thead class="text-xs font-bold text-slate-400 border-b border-slate-100">
+                  <tr>
+                    <th class="py-4 px-4 text-center w-16">ID</th>
+                    <th class="py-4 px-4">Nama</th>
+                    <th class="py-4 px-4">Kelas</th>
+                    <th class="py-4 px-4">NIS</th>
+                    <th class="py-4 px-4 text-center">Status</th>
+                    <th class="py-4 px-4 text-center w-64">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                  {% for siswa in data_siswa %}
+                  <tr class="hover:bg-slate-50/80 transition text-slate-700 text-xs font-medium">
+                    <td class="py-4 px-4 text-center text-slate-500 font-bold">{{ siswa.id }}</td>
+                    <td class="py-4 px-4 font-semibold text-slate-800 text-sm">{{ siswa.nama }}</td>
+                    <td class="py-4 px-4 text-slate-500 text-sm">{{ siswa.kelas }}</td>
+                    <td class="py-4 px-4 text-slate-500 font-mono">{{ siswa.nis }}</td>
+                    
+                    <td class="py-4 px-4 text-center">
+                      {% if siswa.status == 'Aktif' or not siswa.status %}
+                        <span class="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-600">
+                          Aktif
+                        </span>
+                      {% else %}
+                        <span class="inline-flex items-center rounded-full bg-rose-50 px-3 py-1 text-xs font-bold text-rose-600">
+                          Non-Aktif
+                        </span>
+                      {% endif %}
+                    </td>
+
+                    <td class="py-4 px-4 text-center">
+                      <div class="flex items-center justify-center gap-2">
+                        <a href="{% url 'detail_user' siswa.id %}" class="inline-block bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold px-3 py-1.5 rounded-full transition text-xs">
+                          Detail
+                        </a>
+                        <a href="{% url 'edit_user' siswa.id %}" class="inline-block bg-blue-600 text-white hover:bg-blue-700 font-semibold px-4 py-1.5 rounded-full shadow-sm transition text-xs">
+                          Edit
+                        </a>
+                        <a href="{% url 'hapus_user' siswa.id %}" class="inline-block bg-rose-600 text-white hover:bg-rose-700 font-semibold px-3 py-1.5 rounded-full shadow-sm transition text-xs">
+                          Hapus
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="6" class="py-12 text-center text-slate-400 font-medium">
+                      Belum ada data siswa terdaftar di database PostgreSQL.
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

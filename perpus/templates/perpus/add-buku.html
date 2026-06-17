@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tambah Buku - SIPUSTAKA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-100 text-slate-900 h-screen overflow-hidden">
+    <div class="h-screen flex flex-col md:flex-row">
+      
+      <aside class="w-full md:w-72 h-screen bg-slate-950 text-slate-100 flex flex-col justify-between">
+        <div>
+          <div class="px-6 py-7 border-b border-slate-800 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white text-sm">P</div>
+            <div>
+              <h1 class="text-xs font-semibold tracking-wider text-slate-400">SIPUSTAKA</h1>
+              <p class="text-sm font-bold text-slate-100 -mt-1">Sistem Peminjaman Buku</p>
+            </div>
+          </div>
+          <nav class="px-4 py-6 space-y-1">
+            <a href="{% url 'dashboard' %}" class="w-full flex items-center gap-3 text-slate-400 hover:bg-slate-900 px-4 py-3 rounded-2xl transition">
+              <span class="material-icons-outlined">dashboard</span> Dashboard
+            </a>
+            <a href="{% url 'buku' %}" class="w-full flex items-center gap-3 text-slate-200 bg-slate-900 px-4 py-3 rounded-2xl shadow-inner shadow-black/10">
+              <span class="material-icons-outlined">menu_book</span> Buku
+            </a>
+            <a href="{% url 'pinjam' %}" class="w-full flex items-center gap-3 text-slate-400 hover:bg-slate-900 px-4 py-3 rounded-2xl transition">
+              <span class="material-icons-outlined">assignment</span> Peminjaman
+            </a>
+            <a href="{% url 'users' %}" class="w-full flex items-center gap-3 text-slate-400 hover:bg-slate-900 px-4 py-3 rounded-2xl transition">
+              <span class="material-icons-outlined">group</span> User
+            </a>
+          </nav>
+        </div>
+
+        <div class="p-4 border-t border-slate-900 bg-slate-950/50 mb-4 mx-2 rounded-2xl">
+          <p class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Admin Aktif</p>
+          <p class="text-sm font-bold text-slate-200 mt-0.5">Yusuf Iman Assidik</p>
+        </div>
+      </aside>
+
+      <main class="flex-1 overflow-y-auto p-6 md:p-8">
+        <div class="max-w-2xl mx-auto space-y-6">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900">Tambah Koleksi Buku</h2>
+            <p class="text-sm text-slate-500 mt-1">Masukkan informasi data buku baru secara lengkap.</p>
+          </div>
+
+          {% if messages %}
+            {% for message in messages %}
+              <div class="p-4 rounded-xl bg-rose-100 text-rose-700 mb-4">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+
+          <div class="rounded-3xl bg-white p-8 shadow-xl border border-slate-200">
+            <form method="POST" class="space-y-4">
+              {% csrf_token %}
+              
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Judul Buku *</label>
+                <input type="text" name="judul" class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:border-blue-600 transition" required />
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1">Pengarang *</label>
+                  <input type="text" name="pengarang" class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:border-blue-600 transition" required />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1">Kategori *</label>
+                  <select name="kategori" class="w-full rounded-xl border border-slate-300 px-4 py-3 bg-white focus:outline-none focus:border-blue-600 transition" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="Novel">Novel</option>
+                    <option value="Sejarah">Sejarah</option>
+                    <option value="Pendidikan">Pendidikan</option>
+                    <option value="Light Novel">Light Novel</option>
+                    <option value="Fiksi">Fiksi</option>
+                    <option value="Lainnya">Lainnya</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1">Penerbit</label>
+                  <input type="text" name="penerbit" class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:border-blue-600 transition" />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1">Tahun Terbit</label>
+                  <input type="number" name="tahun_terbit" placeholder="Contoh: 2024" class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:border-blue-600 transition" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="sm:col-span-2">
+                  <label class="block text-sm font-semibold text-slate-700 mb-1">Kode Rak *</label>
+                  <select name="rak" class="w-full rounded-xl border border-slate-300 px-4 py-3 bg-white focus:outline-none focus:border-blue-600 transition" required>
+                    <option value="">-- Pilih Lokasi Rak --</option>
+                    <option value="Rak A-01">Rak A-01</option>
+                    <option value="Rak A-02">Rak A-02</option>
+                    <option value="Rak A-03">Rak A-03</option>
+                    <option value="Rak A-04">Rak A-04</option>
+                    <option value="Rak A-05">Rak A-05</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1">Jumlah Stok *</label>
+                  <input type="number" name="stok" class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:border-blue-600 transition" required />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Nomor ISBN *</label>
+                <input type="text" name="isbn" class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:border-blue-600 transition" required />
+              </div>
+
+              <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                <a href="{% url 'buku' %}" class="rounded-xl bg-slate-100 hover:bg-slate-200 px-5 py-3 font-semibold text-slate-700 transition">Batal</a>
+                <button type="submit" class="rounded-xl bg-blue-600 hover:bg-blue-700 px-5 py-3 font-semibold text-white shadow-lg transition">Simpan Buku</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

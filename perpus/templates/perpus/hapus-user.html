@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Konfirmasi Hapus User - SIPUSTAKA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 text-slate-900 h-screen flex justify-center items-center p-4">
+
+    <div class="w-full max-w-md bg-white p-8 rounded-3xl border border-slate-200 shadow-xl space-y-6 text-center">
+        
+        <div class="mx-auto w-16 h-16 bg-rose-50 rounded-full flex items-center justify-center text-rose-600 shadow-inner">
+            <span class="material-icons-outlined text-3xl">warning_amber</span>
+        </div>
+
+        <div>
+            <h2 class="text-xl font-bold text-slate-900">Konfirmasi Hapus Akun</h2>
+            <p class="text-xs text-slate-400 mt-1">Tindakan ini tidak dapat dibatalkan setelah dieksekusi.</p>
+        </div>
+
+        <div class="bg-slate-50 rounded-2xl p-4 text-left border border-slate-100 space-y-2">
+            <div class="flex justify-between text-xs">
+                <span class="text-slate-400 font-medium">Nama Siswa:</span>
+                <span class="text-slate-800 font-bold">{{ user.nama }}</span>
+            </div>
+            <div class="flex justify-between text-xs">
+                <span class="text-slate-400 font-medium">Kelas / NIS:</span>
+                <span class="text-slate-700 font-medium">{{ user.kelas }} / <code class="font-mono bg-slate-200 px-1 rounded text-[11px]">{{ user.nis }}</code></span>
+            </div>
+        </div>
+
+        {% if masih_pinjam > 0 %}
+            <div class="bg-amber-50 rounded-xl p-3.5 text-xs text-amber-700 font-medium text-left flex gap-2 border border-amber-200">
+                <span class="material-icons-outlined text-sm flex-shrink-0 mt-0.5">error_outline</span>
+                <span>Siswa ini <b>tidak bisa dihapus</b> karena masih menguasai <b>{{ masih_pinjam }} peminjaman buku</b> aktif yang belum dikembalikan!</span>
+            </div>
+            
+            <div class="pt-2">
+                <a href="{% url 'users' %}" class="w-full inline-block text-center px-5 py-3 rounded-xl bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition">
+                    Kembali ke Daftar User
+                </a>
+            </div>
+        {% else %}
+            <p class="text-xs text-slate-500 font-medium">
+                Apakah Anda yakin ingin menghapus data keanggotaan siswa tersebut dari basis data perpustakaan?
+            </p>
+
+            <form method="POST" class="flex flex-col sm:flex-row gap-3 pt-2">
+                {% csrf_token %}
+                <a href="{% url 'users' %}" class="flex-1 text-center px-5 py-3 rounded-xl bg-slate-100 text-slate-600 font-bold text-sm hover:bg-slate-200 transition">
+                    Batal
+                </a>
+                <button type="submit" class="flex-1 px-5 py-3 rounded-xl bg-rose-600 text-white font-bold text-sm hover:bg-rose-700 shadow-md shadow-rose-600/20 transition">
+                    Ya, Hapus Permanen
+                </button>
+            </form>
+        {% endif %}
+        
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pinjam Buku - SIPUSTAKA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-100 text-slate-900 h-screen overflow-hidden">
+    <div class="h-screen flex flex-col md:flex-row">
+      
+      <aside class="w-full md:w-72 h-screen bg-slate-950 text-slate-100 flex flex-col justify-between">
+        <div>
+          <div class="px-6 py-7 border-b border-slate-800 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white text-sm">P</div>
+            <div>
+              <h1 class="text-xs font-semibold tracking-wider text-slate-400">SIPUSTAKA</h1>
+              <p class="text-sm font-bold text-slate-100 -mt-1">Sistem Peminjaman Buku</p>
+            </div>
+          </div>
+          <nav class="px-4 py-6 space-y-1">
+            <a href="{% url 'dashboard' %}" class="w-full flex items-center gap-3 text-slate-400 hover:bg-slate-900 px-4 py-3 rounded-2xl transition">
+              <span class="material-icons-outlined">dashboard</span> Dashboard
+            </a>
+            <a href="{% url 'buku' %}" class="w-full flex items-center gap-3 text-slate-400 hover:bg-slate-900 px-4 py-3 rounded-2xl transition">
+              <span class="material-icons-outlined">menu_book</span> Buku
+            </a>
+            <a href="{% url 'pinjam' %}" class="w-full flex items-center gap-3 text-slate-200 bg-slate-900 px-4 py-3 rounded-2xl shadow-inner shadow-black/10">
+              <span class="material-icons-outlined">assignment</span> Peminjaman
+            </a>
+            <a href="{% url 'users' %}" class="w-full flex items-center gap-3 text-slate-400 hover:bg-slate-900 px-4 py-3 rounded-2xl transition">
+              <span class="material-icons-outlined">group</span> User
+            </a>
+          </nav>
+        </div>
+
+        <div class="p-4 border-t border-slate-900 bg-slate-950/50 mb-4 mx-2 rounded-2xl">
+          <p class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Admin Aktif</p>
+          <p class="text-sm font-bold text-slate-200 mt-0.5">Yusuf Iman Assidik</p>
+        </div>
+      </aside>
+
+      <main class="flex-1 overflow-y-auto p-6 md:p-12">
+        <div class="max-w-4xl mx-auto space-y-6">
+          
+          <div class="mb-4">
+            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Peminjaman Buku</p>
+            <h2 class="text-3xl font-bold text-slate-900 mt-1">Pinjam Buku</h2>
+          </div>
+
+          <div class="rounded-[40px] bg-white p-10 shadow-2xl shadow-slate-200/50 border border-slate-200">
+            <form method="POST" class="space-y-8">
+              {% csrf_token %}
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-2">Nama Peminjam</label>
+                  <select name="siswa_id" class="w-full rounded-2xl border border-slate-200 px-4 py-4 bg-slate-50 focus:outline-none focus:border-blue-600 focus:bg-white transition text-xs" required>
+                    <option value="">-- Pilih Siswa --</option>
+                    {% for siswa in daftar_siswa %}
+                      <option value="{{ siswa.id }}">{{ siswa.nama }} - {{ siswa.kelas }} ({{ siswa.nis }})</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-2">Pilih Buku</label>
+                  <select name="buku_id" class="w-full rounded-2xl border border-slate-200 px-4 py-4 bg-slate-50 focus:outline-none focus:border-blue-600 focus:bg-white transition text-xs" required>
+                    <option value="">-- Pilih Buku --</option>
+                    {% for buku in daftar_buku %}
+                      <option value="{{ buku.id }}">{{ buku.judul }} ({{ buku.stok }} stok)</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-2">Tanggal Pinjam</label>
+                  <input type="date" name="tanggal_pinjam" id="tanggal_pinjam" value="{{ tgl_pinjam }}" class="w-full rounded-2xl border border-slate-200 px-4 py-4 bg-slate-50 focus:outline-none focus:border-blue-600 focus:bg-white transition cursor-pointer text-xs" required />
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-2">Tanggal Jatuh Tempo</label>
+                  <input type="date" name="tanggal_jatuh_tempo" id="tanggal_jatuh_tempo" value="{{ tgl_kembali }}" class="w-full rounded-2xl border border-slate-200 px-4 py-4 bg-slate-50 focus:outline-none focus:border-blue-600 focus:bg-white transition cursor-pointer text-xs" required />
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-2">Keperluan</label>
+                  <select name="keperluan" class="w-full rounded-2xl border border-slate-200 px-4 py-4 bg-slate-50 focus:outline-none focus:border-blue-600 focus:bg-white transition text-xs">
+                    <option value="Bacaan pribadi">Bacaan pribadi</option>
+                    <option value="Tugas sekolah">Tugas sekolah</option>
+                    <option value="Referensi kelompok">Referensi kelompok</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-2">Petugas</label>
+                  <input type="text" name="petugas" value="Budi Siregar" class="w-full rounded-2xl border border-slate-200 px-4 py-4 bg-slate-50 focus:outline-none focus:border-blue-600 focus:bg-white transition text-xs" required />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-2">Catatan</label>
+                <textarea name="catatan" rows="4" placeholder="Contoh: buku untuk tugas Bahasa Indonesia" class="w-full rounded-2xl border border-slate-200 px-6 py-4 bg-slate-50 focus:outline-none focus:border-blue-600 focus:bg-white transition text-xs"></textarea>
+              </div>
+
+              <div class="flex justify-end gap-4 pt-6">
+                <a href="{% url 'pinjam' %}" class="rounded-2xl bg-slate-100 hover:bg-slate-200 px-10 py-4 font-bold text-slate-600 transition text-xs">Batal</a>
+                <button type="submit" class="rounded-2xl bg-blue-600 hover:bg-blue-700 px-10 py-4 font-bold text-white shadow-xl shadow-blue-600/30 transition text-xs">Pinjam Buku</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

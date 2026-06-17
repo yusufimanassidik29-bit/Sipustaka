@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User - SIPUSTAKA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 text-slate-900 h-screen flex justify-center items-center">
+
+    <div class="w-full max-w-lg bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+        <div>
+            <h2 class="text-xl font-bold text-slate-900">Edit Data User</h2>
+            <p class="text-xs text-slate-400 mt-1">Perbarui informasi data siswa anggota perpustakaan.</p>
+        </div>
+
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            
+            <div class="space-y-1">
+                <label class="text-xs font-bold text-slate-500">Nama Siswa</label>
+                <input type="text" name="nama" value="{{ user.nama }}" class="w-full bg-slate-50 border border-slate-200 px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium" required>
+            </div>
+
+            <div class="space-y-1">
+                <label class="text-xs font-bold text-slate-500">Kelas</label>
+                <input type="text" name="kelas" value="{{ user.kelas }}" class="w-full bg-slate-50 border border-slate-200 px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium" required>
+            </div>
+
+            <div class="space-y-1">
+                <label class="text-xs font-bold text-slate-500">Nomor NIS</label>
+                <input type="text" name="nis" value="{{ user.nis }}" class="w-full bg-slate-50 border border-slate-200 px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium" required>
+            </div>
+
+            <div class="space-y-1">
+                <label class="text-xs font-bold text-slate-500">Status Akun</label>
+                <select name="status" class="w-full bg-slate-50 border border-slate-200 px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+                    <option value="Aktif" {% if user.status == 'Aktif' %}selected{% endif %}>Aktif</option>
+                    <option value="Non-Aktif" {% if user.status == 'Non-Aktif' %}selected{% endif %}>Non-Aktif</option>
+                </select>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-2">
+                <a href="{% url 'users' %}" class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-600 font-bold text-sm hover:bg-slate-200 transition">Batal</a>
+                <button type="submit" class="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-sm hover:bg-blue-700 transition">Simpan Perubahan</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

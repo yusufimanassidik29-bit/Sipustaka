@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Buku - SIPUSTAKA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-100 text-slate-900 p-6 md:p-12">
+    <div class="max-w-2xl mx-auto bg-white rounded-3xl shadow-xl border border-slate-200 p-8">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-slate-900">Ubah Data Buku</h2>
+        <p class="text-sm text-slate-500 mt-1">Perbarui informasi buku dengan ID #{{ buku.id }}</p>
+      </div>
+
+      <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1">Judul Buku *</label>
+          <input type="text" name="judul" value="{{ buku.judul }}" class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:border-blue-600 transition" required />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Pengarang *</label>
+            <input type="text" name="pengarang" value="{{ buku.pengarang }}" class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:border-blue-600 transition" required />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Kategori *</label>
+            <select name="kategori" class="w-full rounded-xl border border-slate-300 px-4 py-3 bg-white focus:outline-none focus:border-blue-600 transition" required>
+              <option value="Novel" {% if buku.kategori == 'Novel' %}selected{% endif %}>Novel</option>
+              <option value="Sejarah" {% if buku.kategori == 'Sejarah' %}selected{% endif %}>Sejarah</option>
+              <option value="Pendidikan" {% if buku.kategori == 'Pendidikan' %}selected{% endif %}>Pendidikan</option>
+              <option value="Light Novel" {% if buku.kategori == 'Light Novel' %}selected{% endif %}>Light Novel</option>
+              <option value="DLL" {% if buku.kategori == 'DLL' %}selected{% endif %}>DLL</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Penerbit</label>
+            <input type="text" name="penerbit" value="{{ buku.penerbit }}" class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:border-blue-600 transition" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Tahun Terbit</label>
+            <input type="number" name="tahun_terbit" value="{{ buku.tahun_terbit }}" class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:border-blue-600 transition" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="sm:col-span-2">
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Kode Rak *</label>
+            <select name="rak" class="w-full rounded-xl border border-slate-300 px-4 py-3 bg-white focus:outline-none focus:border-blue-600 transition" required>
+              <option value="Rak A-01" {% if buku.rak == 'Rak A-01' %}selected{% endif %}>Rak A-01</option>
+              <option value="Rak A-02" {% if buku.rak == 'Rak A-02' %}selected{% endif %}>Rak A-02</option>
+              <option value="Rak A-03" {% if buku.rak == 'Rak A-03' %}selected{% endif %}>Rak A-03</option>
+              <option value="Rak A-04" {% if buku.rak == 'Rak A-04' %}selected{% endif %}>Rak A-04</option>
+              <option value="Rak A-05" {% if buku.rak == 'Rak A-05' %}selected{% endif %}>Rak A-05</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Jumlah Stok *</label>
+            <input type="number" name="stok" value="{{ buku.stok }}" class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:border-blue-600 transition" required />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1">Nomor ISBN *</label>
+          <input type="text" name="isbn" value="{{ buku.isbn }}" class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:border-blue-600 transition" required />
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
+          <a href="{% url 'buku' %}" class="rounded-xl bg-slate-100 hover:bg-slate-200 px-5 py-3 font-semibold text-slate-700 transition text-sm">Batal</a>
+          <button type="submit" class="rounded-xl bg-blue-600 hover:bg-blue-700 px-5 py-3 font-semibold text-white shadow-lg transition text-sm">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

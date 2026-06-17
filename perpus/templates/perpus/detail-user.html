@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail User - SIPUSTAKA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 text-slate-900 h-screen flex">
+
+    <main class="flex-1 p-8 overflow-y-auto">
+        <div class="max-w-4xl mx-auto space-y-6">
+            
+            <div class="flex items-center gap-4">
+                <a href="{% url 'users' %}" class="p-2 bg-white rounded-full border border-slate-200 hover:bg-slate-50 transition shadow-sm flex items-center justify-center">
+                    <span class="material-icons-outlined text-sm">arrow_back</span>
+                </a>
+                <div>
+                    <p class="text-xs font-semibold text-slate-400">Kelola User</p>
+                    <h2 class="text-xl font-bold text-slate-900">Detail User</h2>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">ID</p>
+                    <p class="text-lg font-bold text-slate-900 mt-1">{{ user.id }}</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Nama</p>
+                    <p class="text-lg font-bold text-slate-900 mt-1">{{ user.nama }}</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Kelas</p>
+                    <p class="text-lg font-bold text-slate-900 mt-1">{{ user.kelas }}</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">NIS</p>
+                    <p class="text-lg font-bold text-slate-900 mt-1">{{ user.nis }}</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Status</p>
+                    <div class="mt-2">
+                        {% if user.status == 'Aktif' %}
+                        <span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-600">Aktif</span>
+                        {% else %}
+                        <span class="inline-flex items-center rounded-full bg-red-50 px-2.5 py-1 text-xs font-bold text-red-600">Non-Aktif</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Peminjaman</p>
+                    <p class="text-lg font-bold text-slate-900 mt-1">{{ total_peminjaman }}</p>
+                </div>
+
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider tracking-widest">Peminjaman Aktif</p>
+                <p class="text-sm font-semibold text-slate-700 mt-2">
+                    {% if peminjaman_aktif > 0 %}
+                        <span class="text-amber-600 font-bold">{{ peminjaman_aktif }} buku</span> masih dipinjam.
+                    {% else %}
+                        Tidak ada buku yang sedang dipinjam.
+                    {% endif %}
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>

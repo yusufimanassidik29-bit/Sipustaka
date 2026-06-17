@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sirkulasi Peminjaman - SIPUSTAKA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-100 text-slate-900 h-screen overflow-hidden">
+    <div class="h-screen flex flex-col md:flex-row">
+      
+      <aside class="w-full md:w-72 h-screen bg-slate-950 text-slate-100 flex flex-col justify-between">
+        <div>
+          <div class="px-6 py-7 border-b border-slate-800 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white text-sm">P</div>
+            <div>
+              <h1 class="text-xs font-semibold tracking-wider text-slate-400">SIPUSTAKA</h1>
+              <p class="text-sm font-bold text-slate-100 -mt-1">Sistem Peminjaman Buku</p>
+            </div>
+          </div>
+          <nav class="px-4 py-6 space-y-1">
+            <a href="{% url 'dashboard' %}" class="w-full flex items-center gap-3 text-slate-400 hover:bg-slate-900 px-4 py-3 rounded-2xl transition">
+              <span class="material-icons-outlined">dashboard</span> Dashboard
+            </a>
+            <a href="{% url 'buku' %}" class="w-full flex items-center gap-3 text-slate-400 hover:bg-slate-900 px-4 py-3 rounded-2xl transition">
+              <span class="material-icons-outlined">menu_book</span> Buku
+            </a>
+            <a href="{% url 'pinjam' %}" class="w-full flex items-center gap-3 text-slate-200 bg-slate-900 px-4 py-3 rounded-2xl shadow-inner shadow-black/10">
+              <span class="material-icons-outlined">assignment</span> Peminjaman
+            </a>
+            <a href="{% url 'users' %}" class="w-full flex items-center gap-3 text-slate-400 hover:bg-slate-900 px-4 py-3 rounded-2xl transition">
+              <span class="material-icons-outlined">group</span> User
+            </a>
+          </nav>
+        </div>
+
+        <div class="p-4 border-t border-slate-900 bg-slate-950/50 mb-4 mx-2 rounded-2xl">
+          <p class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Admin Aktif</p>
+          <p class="text-sm font-bold text-slate-200 mt-0.5">Yusuf Iman Assidik</p>
+        </div>
+      </aside>
+
+      <main class="flex-1 overflow-y-auto p-6 md:p-8">
+        <div class="space-y-6">
+          
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <p class="text-xs font-semibold text-slate-500 uppercase">Catat peminjaman dan pengembalian buku.</p>
+              <h2 class="text-2xl font-bold text-slate-900 mt-0.5">Peminjaman</h2>
+            </div>
+            <a href="{% url 'add_pinjam' %}" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-blue-600 hover:bg-blue-700 px-6 py-3 font-semibold text-white shadow-lg shadow-blue-600/20 transition text-sm">
+              <span class="material-icons-outlined text-md">add_box</span> Pinjam Buku
+            </a>
+          </div>
+
+          <div class="rounded-3xl bg-white shadow-xl border border-slate-200 overflow-hidden p-4">
+            <div class="overflow-x-auto">
+              <table class="w-full border-collapse text-left text-sm text-slate-600">
+                <thead class="text-xs font-bold text-slate-400 border-b border-slate-100">
+                  <tr>
+                    <th class="py-4 px-4 text-center">ID</th>
+                    <th class="py-4 px-4">Nama Peminjam</th>
+                    <th class="py-4 px-4">Buku</th>
+                    <th class="py-4 px-4">Tanggal Pinjam</th>
+                    <th class="py-4 px-4">Jatuh Tempo</th>
+                    <th class="py-4 px-4">Keperluan</th>
+                    <th class="py-4 px-4">Petugas</th>
+                    <th class="py-4 px-4 text-center">Status</th>
+                    <th class="py-4 px-4 text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                  {% for pinjam in data_peminjaman %}
+                  <tr class="hover:bg-slate-50/80 transition text-slate-700 text-xs font-medium">
+                    <td class="py-4 px-4 text-center text-slate-500 font-bold">{{ pinjam.id }}</td>
+                    <td class="py-4 px-4 font-semibold text-slate-800 text-sm">{{ pinjam.nama_siswa }}</td>
+                    <td class="py-4 px-4 text-slate-600 text-sm font-medium">{{ pinjam.judul_buku }}</td>
+                    <td class="py-4 px-4 text-slate-500">{{ pinjam.tanggal_pinjam|date:"d M Y" }}</td>
+                    <td class="py-4 px-4 text-slate-500">{{ pinjam.jatuh_tempo|date:"d M Y" }}</td>
+                    <td class="py-4 px-4 text-slate-400 max-w-[180px] truncate" title="{{ pinjam.keperluan }}">{{ pinjam.keperluan }}</td>
+                    <td class="py-4 px-4 text-slate-600">{{ pinjam.petugas }}</td>
+                    
+                    <td class="py-4 px-4 text-center">
+                      {% if pinjam.status_pinjam == 'Dipinjam' or pinjam.status_pinjam == 'dipinjam' %}
+                        <span class="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-600">Dipinjam</span>
+                      {% else %}
+                        <span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-600">Dikembalikan</span>
+                      {% endif %}
+                    </td>
+
+                    <td class="py-4 px-4 text-center">
+                      {% if pinjam.status_pinjam == 'Dipinjam' or pinjam.status_pinjam == 'dipinjam' %}
+                        <a href="{% url 'kembalikan_buku' pinjam.id %}" class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-1.5 rounded-full text-xs transition">
+                          Kembalikan
+                        </a>
+                      {% else %}
+                        <span class="inline-block bg-slate-100 text-slate-400 font-semibold px-4 py-1.5 rounded-full text-xs cursor-not-allowed">Selesai</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
